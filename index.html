@@ -1,0 +1,1706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chathu Cake — Artisan Cakes & Sweet Dreams</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Josefin+Sans:wght@100;200;300;400&family=Great+Vibes&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --cream: #fdf6ee;
+    --blush: #f4c8b0;
+    --rose: #c97b5e;
+    --dusty-rose: #d4a090;
+    --deep-rose: #8b3a2a;
+    --chocolate: #3d1f14;
+    --gold: #c8974a;
+    --gold-light: #e8c485;
+    --ivory: #faf3e8;
+    --sage: #9aab8d;
+    --mauve: #b08b8b;
+    --text-dark: #2a1a14;
+    --text-mid: #6b4c3b;
+    --text-light: #a08070;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--text-dark);
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* ── CUSTOM CURSOR ── */
+  .cursor {
+    position: fixed;
+    width: 12px; height: 12px;
+    background: var(--rose);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s, width 0.3s, height 0.3s, background 0.3s;
+    mix-blend-mode: multiply;
+  }
+  .cursor-follower {
+    position: fixed;
+    width: 40px; height: 40px;
+    border: 1.5px solid var(--rose);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: transform 0.15s ease, width 0.3s, height 0.3s, opacity 0.3s;
+    opacity: 0.5;
+  }
+  body:hover .cursor-follower { opacity: 1; }
+
+  /* ── LOADER ── */
+  #loader {
+    position: fixed; inset: 0;
+    background: var(--chocolate);
+    z-index: 9000;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column;
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  #loader.hide { opacity: 0; pointer-events: none; transform: translateY(-20px); }
+  .loader-text {
+    font-family: 'Great Vibes', cursive;
+    font-size: clamp(3rem, 8vw, 6rem);
+    color: var(--gold-light);
+    animation: loaderPulse 1.5s ease-in-out infinite;
+  }
+  .loader-line {
+    width: 0; height: 1px;
+    background: var(--gold);
+    margin-top: 1rem;
+    animation: loaderLine 2s ease forwards;
+  }
+  @keyframes loaderPulse { 0%,100%{opacity:.4} 50%{opacity:1} }
+  @keyframes loaderLine { to { width: 200px; } }
+
+  /* ── PARTICLES ── */
+  #particles { position: fixed; inset: 0; pointer-events: none; z-index: 1; overflow: hidden; }
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0;
+    animation: float linear infinite;
+  }
+  @keyframes float {
+    0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.6; }
+    90% { opacity: 0.4; }
+    100% { transform: translateY(-10vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1.5rem 4rem;
+    display: flex; align-items: center; justify-content: space-between;
+    transition: all 0.4s ease;
+  }
+  nav.scrolled {
+    background: rgba(253,246,238,0.92);
+    backdrop-filter: blur(20px);
+    padding: 1rem 4rem;
+    box-shadow: 0 2px 40px rgba(61,31,20,0.08);
+  }
+  .nav-logo {
+    font-family: 'Great Vibes', cursive;
+    font-size: 2.2rem;
+    color: var(--cream);
+    text-decoration: none;
+    transition: color 0.4s;
+  }
+  nav.scrolled .nav-logo { color: var(--chocolate); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(253,246,238,0.85);
+    text-decoration: none;
+    transition: color 0.3s;
+    position: relative;
+  }
+  nav.scrolled .nav-links a { color: var(--text-mid); }
+  .nav-links a::after {
+    content: '';
+    position: absolute; bottom: -4px; left: 0;
+    width: 0; height: 1px;
+    background: var(--rose);
+    transition: width 0.3s ease;
+  }
+  .nav-links a:hover::after { width: 100%; }
+  .nav-links a:hover { color: var(--rose); }
+  .nav-order-btn {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--chocolate);
+    background: var(--gold-light);
+    border: none;
+    padding: 0.7rem 1.8rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 0;
+  }
+  .nav-order-btn:hover { background: var(--gold); transform: translateY(-2px); }
+
+  /* ── HERO ── */
+  #hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex; align-items: center;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, #2a1208 0%, #4a2015 35%, #6b3520 65%, #3d1f14 100%);
+  }
+  .hero-bg::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1920&q=80') center/cover no-repeat;
+    opacity: 0.25;
+    animation: heroZoom 20s ease-in-out infinite alternate;
+  }
+  .hero-bg::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 20% 50%, rgba(200,151,74,0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, rgba(201,123,94,0.12) 0%, transparent 50%);
+  }
+  @keyframes heroZoom { from { transform: scale(1); } to { transform: scale(1.08); } }
+
+  .hero-content {
+    position: relative; z-index: 2;
+    padding: 0 4rem;
+    max-width: 55%;
+    animation: heroReveal 1.2s ease 0.3s both;
+  }
+  @keyframes heroReveal {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 0.7rem;
+    font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 2rem;
+  }
+  .hero-badge::before, .hero-badge::after {
+    content: ''; display: block; width: 30px; height: 1px; background: var(--gold);
+  }
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.5rem, 7vw, 7rem);
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 1.05;
+    margin-bottom: 0.5rem;
+  }
+  .hero-title span {
+    font-family: 'Great Vibes', cursive;
+    font-size: 1.4em;
+    color: var(--gold-light);
+    display: block;
+    line-height: 1;
+  }
+  .hero-subtitle {
+    font-size: 0.75rem; letter-spacing: 0.15em;
+    color: rgba(244,200,176,0.7);
+    margin-bottom: 3rem;
+    max-width: 400px; line-height: 2;
+    text-transform: uppercase;
+  }
+  .hero-ctas { display: flex; gap: 1.2rem; align-items: center; }
+  .btn-primary {
+    padding: 1rem 2.5rem;
+    background: var(--gold);
+    color: var(--chocolate);
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+    border: none; cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative; overflow: hidden;
+    text-decoration: none; display: inline-block;
+  }
+  .btn-primary::before {
+    content: ''; position: absolute; inset: 0;
+    background: var(--gold-light);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+  .btn-primary:hover::before { transform: translateX(0); }
+  .btn-primary span { position: relative; z-index: 1; }
+  .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(200,151,74,0.4); }
+
+  .btn-ghost {
+    padding: 1rem 2rem;
+    border: 1px solid rgba(244,200,176,0.4);
+    color: var(--cream);
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+    background: transparent; cursor: pointer;
+    transition: all 0.3s ease; text-decoration: none; display: inline-block;
+  }
+  .btn-ghost:hover { border-color: var(--gold-light); color: var(--gold-light); transform: translateY(-2px); }
+
+  .hero-float-img {
+    position: absolute; right: 0; top: 0; bottom: 0;
+    width: 50%;
+    overflow: hidden;
+  }
+  .hero-float-img img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    animation: heroImgReveal 1.5s ease 0.5s both;
+  }
+  .hero-float-img::before {
+    content: '';
+    position: absolute; inset: 0; z-index: 1;
+    background: linear-gradient(to right, var(--chocolate) 0%, rgba(61,31,20,0.4) 40%, transparent 70%);
+  }
+  @keyframes heroImgReveal {
+    from { clip-path: inset(0 100% 0 0); }
+    to { clip-path: inset(0 0% 0 0); }
+  }
+
+  .hero-scroll {
+    position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+    z-index: 3;
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase;
+    color: rgba(253,246,238,0.5);
+  }
+  .scroll-line {
+    width: 1px; height: 40px;
+    background: linear-gradient(to bottom, rgba(253,246,238,0.5), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+  @keyframes scrollPulse {
+    0%,100% { transform: scaleY(1); opacity: 0.5; }
+    50% { transform: scaleY(1.3); opacity: 1; }
+  }
+
+  /* ── SECTION SHARED ── */
+  section { position: relative; }
+  .section-label {
+    font-size: 0.6rem; letter-spacing: 0.35em; text-transform: uppercase;
+    color: var(--gold);
+    display: flex; align-items: center; gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .section-label::after { content: ''; flex: 0 0 40px; height: 1px; background: var(--gold); }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 300; line-height: 1.1;
+    color: var(--chocolate);
+  }
+  .section-title em { font-style: italic; color: var(--rose); }
+
+  /* ── MARQUEE ── */
+  .marquee-bar {
+    background: var(--chocolate);
+    padding: 1rem 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .marquee-track {
+    display: inline-flex; gap: 3rem;
+    animation: marquee 20s linear infinite;
+  }
+  .marquee-track span {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.9rem; font-style: italic;
+    color: var(--gold-light);
+    letter-spacing: 0.1em;
+  }
+  .marquee-dot { color: var(--rose) !important; font-style: normal !important; }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* ── ABOUT ── */
+  #about {
+    padding: 10rem 4rem;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 6rem; align-items: center;
+    background: var(--ivory);
+  }
+  .about-images {
+    position: relative;
+    height: 600px;
+  }
+  .about-img-main {
+    position: absolute; top: 0; left: 0;
+    width: 75%; height: 85%;
+    object-fit: cover;
+    box-shadow: 20px 20px 60px rgba(61,31,20,0.2);
+  }
+  .about-img-accent {
+    position: absolute; bottom: 0; right: 0;
+    width: 55%; height: 55%;
+    object-fit: cover;
+    border: 8px solid var(--ivory);
+    box-shadow: 10px 10px 40px rgba(61,31,20,0.15);
+  }
+  .about-gold-box {
+    position: absolute; top: 50%; left: 45%;
+    transform: translate(-50%, -50%);
+    width: 80px; height: 80px;
+    border: 1px solid var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    background: var(--ivory);
+    z-index: 2;
+    animation: rotateSlow 15s linear infinite;
+  }
+  .about-gold-box::before {
+    content: '✦';
+    font-size: 1.5rem; color: var(--gold);
+  }
+  @keyframes rotateSlow { from { transform: translate(-50%,-50%) rotate(0); } to { transform: translate(-50%,-50%) rotate(360deg); } }
+
+  .about-text { padding-right: 2rem; }
+  .about-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem; font-style: italic;
+    color: var(--rose);
+    border-left: 2px solid var(--gold);
+    padding-left: 1.5rem;
+    margin: 2rem 0;
+    line-height: 1.7;
+  }
+  .about-body {
+    font-size: 0.85rem; line-height: 2;
+    color: var(--text-mid);
+    margin-bottom: 2rem;
+  }
+  .stats-row { display: flex; gap: 3rem; margin-top: 3rem; }
+  .stat-item {}
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem; font-weight: 300;
+    color: var(--chocolate);
+    line-height: 1;
+  }
+  .stat-num span { color: var(--gold); font-size: 2rem; }
+  .stat-label { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-light); }
+
+  /* ── SPECIALTIES ── */
+  #specialties {
+    padding: 8rem 4rem;
+    background: var(--cream);
+  }
+  .specialties-header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-bottom: 5rem;
+  }
+  .specialty-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto auto;
+    gap: 1.5rem;
+  }
+  .specialty-card {
+    position: relative; overflow: hidden;
+    cursor: pointer;
+    aspect-ratio: 3/4;
+    background: var(--chocolate);
+  }
+  .specialty-card:first-child {
+    grid-row: span 2;
+    aspect-ratio: auto;
+  }
+  .specialty-card img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.7s ease;
+    display: block;
+  }
+  .specialty-card:hover img { transform: scale(1.08); }
+  .specialty-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(61,31,20,0.9) 0%, rgba(61,31,20,0.2) 50%, transparent 100%);
+    transition: all 0.4s ease;
+  }
+  .specialty-card:hover .specialty-overlay {
+    background: linear-gradient(to top, rgba(61,31,20,0.95) 0%, rgba(61,31,20,0.4) 60%, rgba(61,31,20,0.1) 100%);
+  }
+  .specialty-info {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 2rem;
+    transform: translateY(10px);
+    transition: transform 0.4s ease;
+  }
+  .specialty-card:hover .specialty-info { transform: translateY(0); }
+  .specialty-tag {
+    font-size: 0.58rem; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.4rem;
+  }
+  .specialty-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.3rem, 2.5vw, 2rem);
+    color: var(--cream);
+    font-weight: 300; line-height: 1.2;
+  }
+  .specialty-desc {
+    font-size: 0.75rem; line-height: 1.7;
+    color: rgba(253,246,238,0.65);
+    margin-top: 0.7rem;
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.5s ease, opacity 0.4s ease;
+    opacity: 0;
+  }
+  .specialty-card:hover .specialty-desc { max-height: 100px; opacity: 1; }
+  .specialty-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem; color: var(--gold-light);
+    margin-top: 1rem;
+    font-style: italic;
+  }
+
+  /* ── FEATURED ── */
+  #featured {
+    background: var(--chocolate);
+    padding: 8rem 0;
+    overflow: hidden;
+  }
+  .featured-header {
+    padding: 0 4rem;
+    margin-bottom: 4rem;
+    display: flex; justify-content: space-between; align-items: flex-end;
+  }
+  .featured-header .section-title { color: var(--cream); }
+  .featured-header .section-label { color: var(--gold); }
+
+  .cake-carousel {
+    display: flex;
+    gap: 2rem;
+    padding: 0 4rem 2rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .cake-carousel::-webkit-scrollbar { display: none; }
+  .cake-card {
+    flex: 0 0 340px;
+    scroll-snap-align: start;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(200,151,74,0.2);
+    overflow: hidden;
+    transition: transform 0.4s ease, border-color 0.4s;
+  }
+  .cake-card:hover { transform: translateY(-8px); border-color: var(--gold); }
+  .cake-card-img {
+    width: 100%; height: 280px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s ease;
+  }
+  .cake-card:hover .cake-card-img { transform: scale(1.05); }
+  .cake-card-body { padding: 1.5rem; }
+  .cake-card-cat {
+    font-size: 0.58rem; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+  .cake-card-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem; color: var(--cream);
+    font-weight: 300;
+  }
+  .cake-card-desc {
+    font-size: 0.73rem; line-height: 1.8;
+    color: rgba(253,246,238,0.5);
+    margin-top: 0.5rem;
+  }
+  .cake-card-footer {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 1.5rem; padding-top: 1rem;
+    border-top: 1px solid rgba(200,151,74,0.15);
+  }
+  .cake-card-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem; font-style: italic;
+    color: var(--gold-light);
+  }
+  .cake-card-btn {
+    font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--gold);
+    background: none; border: 1px solid rgba(200,151,74,0.4);
+    padding: 0.5rem 1rem; cursor: pointer;
+    transition: all 0.3s;
+  }
+  .cake-card-btn:hover { background: var(--gold); color: var(--chocolate); }
+
+  /* ── PROCESS ── */
+  #process {
+    padding: 8rem 4rem;
+    background: var(--ivory);
+  }
+  .process-header { text-align: center; margin-bottom: 5rem; }
+  .process-header .section-label { justify-content: center; }
+  .process-header .section-label::after { display: none; }
+  .process-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 3rem;
+    position: relative;
+  }
+  .process-grid::before {
+    content: '';
+    position: absolute; top: 45px; left: 12%; right: 12%;
+    height: 1px; background: linear-gradient(to right, transparent, var(--gold), transparent);
+    z-index: 0;
+  }
+  .process-step { text-align: center; position: relative; z-index: 1; }
+  .process-icon {
+    width: 90px; height: 90px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1.5rem;
+    background: var(--ivory);
+    font-size: 1.8rem;
+    transition: all 0.4s ease;
+  }
+  .process-step:hover .process-icon {
+    background: var(--chocolate);
+    transform: scale(1.1) rotate(10deg);
+  }
+  .process-num {
+    position: absolute; top: -8px; right: calc(50% - 55px);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.7rem; color: var(--gold);
+    background: var(--ivory); padding: 0 4px;
+  }
+  .process-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem; font-weight: 400;
+    color: var(--chocolate); margin-bottom: 0.5rem;
+  }
+  .process-body { font-size: 0.73rem; line-height: 1.9; color: var(--text-mid); }
+
+  /* ── GALLERY MOSAIC ── */
+  #gallery {
+    padding: 8rem 4rem;
+    background: var(--cream);
+  }
+  .gallery-header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-bottom: 3rem;
+  }
+  .mosaic {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(3, 220px);
+    gap: 12px;
+  }
+  .mosaic-item { overflow: hidden; position: relative; cursor: pointer; background: var(--chocolate); }
+  .mosaic-item:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+  .mosaic-item:nth-child(2) { grid-column: span 2; }
+  .mosaic-item:nth-child(3) { grid-column: span 2; }
+  .mosaic-item:nth-child(4) { grid-column: span 1; }
+  .mosaic-item:nth-child(5) { grid-column: span 1; }
+  .mosaic-item:nth-child(6) { grid-column: span 2; }
+  .mosaic-item:nth-child(7) { grid-column: span 2; }
+  .mosaic-item:nth-child(8) { grid-column: span 2; }
+  .mosaic-item:nth-child(9) { grid-column: span 2; }
+  .mosaic-item img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+    display: block;
+  }
+  .mosaic-item:hover img { transform: scale(1.1); }
+  .mosaic-item::after {
+    content: attr(data-label);
+    position: absolute; inset: 0;
+    background: rgba(61,31,20,0.7);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem; color: var(--cream);
+    letter-spacing: 0.1em;
+    opacity: 0; transition: opacity 0.4s;
+  }
+  .mosaic-item:hover::after { opacity: 1; }
+
+  /* ── TESTIMONIALS ── */
+  #testimonials {
+    background: linear-gradient(135deg, #2a1208 0%, #4a2015 100%);
+    padding: 8rem 4rem;
+    overflow: hidden;
+  }
+  .testimonials-header { text-align: center; margin-bottom: 5rem; }
+  .testimonials-header .section-title { color: var(--cream); }
+  .testimonials-header .section-label { justify-content: center; }
+  .testimonials-header .section-label::after { display: none; }
+  .testimonials-track {
+    display: flex; gap: 2rem;
+    animation: testimonialScroll 40s linear infinite;
+  }
+  .testimonials-track:hover { animation-play-state: paused; }
+  @keyframes testimonialScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .testimonial-card {
+    flex: 0 0 380px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(200,151,74,0.2);
+    padding: 2.5rem;
+    position: relative;
+  }
+  .testimonial-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 4rem; line-height: 1;
+    color: var(--gold); opacity: 0.4;
+    position: absolute; top: 1rem; right: 1.5rem;
+  }
+  .testimonial-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem; font-style: italic;
+    color: rgba(253,246,238,0.8);
+    line-height: 1.8;
+    margin-bottom: 2rem;
+  }
+  .testimonial-author {
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .testimonial-avatar {
+    width: 45px; height: 45px; border-radius: 50%;
+    object-fit: cover; border: 2px solid var(--gold);
+  }
+  .testimonial-name { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--cream); }
+  .testimonial-role { font-size: 0.65rem; color: var(--gold); margin-top: 0.2rem; }
+  .stars { color: var(--gold); font-size: 0.7rem; margin-bottom: 1rem; letter-spacing: 0.15em; }
+
+  /* ── CTA SECTION ── */
+  #cta {
+    position: relative;
+    padding: 10rem 4rem;
+    text-align: center;
+    overflow: hidden;
+    background: var(--cream);
+  }
+  #cta::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: url('https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=1920&q=80') center/cover;
+    opacity: 0.07;
+  }
+  .cta-inner { position: relative; z-index: 1; max-width: 700px; margin: 0 auto; }
+  .cta-title {
+    font-family: 'Great Vibes', cursive;
+    font-size: clamp(3.5rem, 7vw, 6rem);
+    color: var(--chocolate);
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+  .cta-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem; font-style: italic;
+    color: var(--text-mid); margin-bottom: 3rem;
+    line-height: 1.7;
+  }
+  .cta-buttons { display: flex; gap: 1.5rem; justify-content: center; }
+  .cta-divider {
+    width: 100px; height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+    margin: 2.5rem auto;
+  }
+
+  /* ── FLAVORS WHEEL ── */
+  #flavors {
+    padding: 8rem 4rem;
+    background: var(--ivory);
+  }
+  .flavors-header { text-align: center; margin-bottom: 5rem; }
+  .flavors-header .section-label { justify-content: center; }
+  .flavors-header .section-label::after { display: none; }
+  .flavors-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1rem;
+  }
+  .flavor-pill {
+    padding: 1.5rem 1rem;
+    text-align: center;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: white;
+    box-shadow: 0 2px 20px rgba(61,31,20,0.05);
+  }
+  .flavor-pill:hover {
+    border-color: var(--gold);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(61,31,20,0.12);
+  }
+  .flavor-emoji { font-size: 2rem; display: block; margin-bottom: 0.5rem; }
+  .flavor-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem; color: var(--chocolate);
+  }
+  .flavor-note { font-size: 0.65rem; color: var(--text-light); letter-spacing: 0.1em; margin-top: 0.2rem; }
+
+  /* ── CONTACT ── */
+  #contact {
+    padding: 8rem 4rem;
+    background: var(--chocolate);
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 8rem;
+  }
+  .contact-info {}
+  .contact-info .section-title { color: var(--cream); }
+  .contact-info .section-label { color: var(--gold); }
+  .contact-body {
+    font-size: 0.85rem; line-height: 2;
+    color: rgba(253,246,238,0.6);
+    margin: 2rem 0;
+  }
+  .contact-details { margin-top: 2.5rem; }
+  .contact-row {
+    display: flex; gap: 1.5rem; align-items: flex-start;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(200,151,74,0.1);
+  }
+  .contact-icon { color: var(--gold); font-size: 1.1rem; margin-top: 0.1rem; }
+  .contact-row-label { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.3rem; }
+  .contact-row-val { font-size: 0.82rem; color: rgba(253,246,238,0.7); line-height: 1.6; }
+
+  .contact-form {}
+  .form-group { margin-bottom: 1.5rem; }
+  .form-label { font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; display: block; }
+  .form-input, .form-select, .form-textarea {
+    width: 100%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(200,151,74,0.2);
+    color: var(--cream);
+    padding: 0.9rem 1rem;
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.8rem;
+    outline: none;
+    transition: border-color 0.3s;
+    -webkit-appearance: none;
+  }
+  .form-input::placeholder, .form-textarea::placeholder { color: rgba(253,246,238,0.2); }
+  .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--gold); }
+  .form-textarea { resize: vertical; min-height: 120px; }
+  .form-select option { background: var(--chocolate); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .form-submit {
+    width: 100%; padding: 1.1rem;
+    background: var(--gold);
+    color: var(--chocolate);
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase;
+    border: none; cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative; overflow: hidden;
+  }
+  .form-submit:hover { background: var(--gold-light); transform: translateY(-2px); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #1a0c06;
+    padding: 5rem 4rem 2rem;
+  }
+  .footer-top {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 4rem; margin-bottom: 4rem;
+  }
+  .footer-brand {}
+  .footer-logo {
+    font-family: 'Great Vibes', cursive;
+    font-size: 3rem; color: var(--gold-light);
+    display: block; margin-bottom: 1rem;
+  }
+  .footer-tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: 0.95rem;
+    color: rgba(253,246,238,0.4); line-height: 1.7;
+    max-width: 280px;
+  }
+  .footer-social { display: flex; gap: 1rem; margin-top: 2rem; }
+  .social-btn {
+    width: 38px; height: 38px;
+    border: 1px solid rgba(200,151,74,0.25);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--gold);
+    font-size: 0.9rem; cursor: pointer;
+    transition: all 0.3s; text-decoration: none;
+  }
+  .social-btn:hover { background: var(--gold); color: var(--chocolate); border-color: var(--gold); }
+
+  .footer-col-title {
+    font-size: 0.62rem; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1.5rem;
+  }
+  .footer-links { list-style: none; }
+  .footer-links li { margin-bottom: 0.8rem; }
+  .footer-links a {
+    font-size: 0.8rem; color: rgba(253,246,238,0.45);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .footer-links a:hover { color: var(--gold-light); }
+
+  .footer-bottom {
+    border-top: 1px solid rgba(200,151,74,0.1);
+    padding-top: 2rem;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-copy { font-size: 0.68rem; color: rgba(253,246,238,0.25); letter-spacing: 0.1em; }
+  .footer-love { font-size: 0.68rem; color: rgba(200,151,74,0.4); letter-spacing: 0.05em; }
+
+  /* ── RIBBON ── */
+  .ribbon {
+    position: fixed; bottom: 2rem; right: 2rem;
+    z-index: 50;
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    background: var(--gold);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 8px 30px rgba(200,151,74,0.5);
+    transition: all 0.3s ease;
+    text-decoration: none;
+  }
+  .ribbon:hover { transform: scale(1.1) translateY(-3px); }
+  .ribbon-icon { font-size: 1.4rem; line-height: 1; }
+  .ribbon-text { font-size: 0.45rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--chocolate); font-weight: 600; }
+
+  /* ── REVEAL ANIMATIONS ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 1.2rem 1.5rem; }
+    nav.scrolled { padding: 0.8rem 1.5rem; }
+    .nav-links { display: none; }
+    #hero { min-height: 100svh; }
+    .hero-content { max-width: 100%; padding: 0 1.5rem; padding-top: 8rem; }
+    .hero-float-img { display: none; }
+    #about { grid-template-columns: 1fr; padding: 5rem 1.5rem; gap: 3rem; }
+    .about-images { height: 300px; }
+    #specialties { padding: 5rem 1.5rem; }
+    .specialties-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+    .specialty-grid { grid-template-columns: 1fr 1fr; }
+    .specialty-card:first-child { grid-row: span 1; aspect-ratio: 3/4; }
+    #featured { padding: 5rem 0; }
+    .featured-header { padding: 0 1.5rem; }
+    .cake-carousel { padding: 0 1.5rem 2rem; }
+    #process { padding: 5rem 1.5rem; }
+    .process-grid { grid-template-columns: 1fr 1fr; }
+    .process-grid::before { display: none; }
+    #gallery { padding: 5rem 1.5rem; }
+    .gallery-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+    .mosaic { grid-template-columns: repeat(3, 1fr); grid-template-rows: auto; }
+    .mosaic-item { aspect-ratio: 1; }
+    .mosaic-item:nth-child(1) { grid-column: span 2; grid-row: span 1; }
+    .mosaic-item:nth-child(n) { grid-column: span 1; grid-row: span 1; }
+    #testimonials { padding: 5rem 1.5rem; }
+    #cta { padding: 6rem 1.5rem; }
+    .cta-buttons { flex-direction: column; align-items: center; }
+    #flavors { padding: 5rem 1.5rem; }
+    .flavors-grid { grid-template-columns: repeat(3, 1fr); }
+    #contact { grid-template-columns: 1fr; gap: 4rem; padding: 5rem 1.5rem; }
+    footer { padding: 4rem 1.5rem 2rem; }
+    .footer-top { grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .stats-row { flex-wrap: wrap; gap: 1.5rem; }
+    .form-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- CUSTOM CURSOR -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-follower" id="cursorFollower"></div>
+
+<!-- PARTICLES -->
+<div id="particles"></div>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-text">Chathu Cake</div>
+  <div class="loader-line"></div>
+</div>
+
+<!-- NAVIGATION -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">Chathu Cake</a>
+  <ul class="nav-links">
+    <li><a href="#about">Our Story</a></li>
+    <li><a href="#specialties">Specialties</a></li>
+    <li><a href="#featured">Menu</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="nav-order-btn" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Order Now</button>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-badge">Est. 2018 · Artisan Cakes · Sri Lanka</div>
+    <h1 class="hero-title">
+      Crafted with<br>
+      <span>Love & Magic</span>
+    </h1>
+    <p class="hero-subtitle">Bespoke celebration cakes • Wedding creations<br>Daily indulgences • Custom orders welcome</p>
+    <div class="hero-ctas">
+      <a href="#specialties" class="btn-primary"><span>Explore Our Cakes</span></a>
+      <a href="#contact" class="btn-ghost">Order Custom</a>
+    </div>
+  </div>
+  <div class="hero-float-img">
+    <img src="https://images.unsplash.com/photo-1535254973040-607b474cb50d?w=900&q=85" alt="Elegant wedding cake">
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    Scroll
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-bar">
+  <div class="marquee-track" id="marqueeTrack">
+    <span>Wedding Cakes</span><span class="marquee-dot">✦</span>
+    <span>Birthday Celebrations</span><span class="marquee-dot">✦</span>
+    <span>Custom Creations</span><span class="marquee-dot">✦</span>
+    <span>Anniversary Cakes</span><span class="marquee-dot">✦</span>
+    <span>Cupcakes & Petit Fours</span><span class="marquee-dot">✦</span>
+    <span>Fondant Artistry</span><span class="marquee-dot">✦</span>
+    <span>Drip Cakes</span><span class="marquee-dot">✦</span>
+    <span>Floral Designs</span><span class="marquee-dot">✦</span>
+    <span>Wedding Cakes</span><span class="marquee-dot">✦</span>
+    <span>Birthday Celebrations</span><span class="marquee-dot">✦</span>
+    <span>Custom Creations</span><span class="marquee-dot">✦</span>
+    <span>Anniversary Cakes</span><span class="marquee-dot">✦</span>
+    <span>Cupcakes & Petit Fours</span><span class="marquee-dot">✦</span>
+    <span>Fondant Artistry</span><span class="marquee-dot">✦</span>
+    <span>Drip Cakes</span><span class="marquee-dot">✦</span>
+    <span>Floral Designs</span><span class="marquee-dot">✦</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-images reveal">
+    <img class="about-img-main" src="https://images.unsplash.com/photo-1486427944299-d1955d23e34d?w=700&q=85" alt="Cake making">
+    <img class="about-img-accent" src="https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?w=500&q=85" alt="Detail work">
+    <div class="about-gold-box"></div>
+  </div>
+  <div class="about-text reveal reveal-delay-2">
+    <div class="section-label">Our Story</div>
+    <h2 class="section-title">Where Every Cake<br>Tells a <em>Story</em></h2>
+    <blockquote class="about-quote">
+      "A cake is not just dessert — it is the centrepiece of your most cherished moments."
+    </blockquote>
+    <p class="about-body">
+      At Chathu Cake, we believe that every celebration deserves something truly extraordinary. 
+      Founded in the heart of Sri Lanka, our artisan bakery combines time-honoured techniques 
+      with modern artistry to create cakes that are as beautiful as they are delicious.
+    </p>
+    <p class="about-body">
+      Each creation is handcrafted using the finest local ingredients — fresh butter, 
+      single-origin chocolate, and seasonal blooms. From intimate birthday gatherings 
+      to grand wedding receptions, we pour our hearts into every tier.
+    </p>
+    <a href="#contact" class="btn-primary" style="margin-top:1rem;"><span>Begin Your Order</span></a>
+    <div class="stats-row">
+      <div class="stat-item">
+        <div class="stat-num">500<span>+</span></div>
+        <div class="stat-label">Cakes Created</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">6<span>+</span></div>
+        <div class="stat-label">Years of Love</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">100<span>%</span></div>
+        <div class="stat-label">Handcrafted</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SPECIALTIES -->
+<section id="specialties">
+  <div class="specialties-header reveal">
+    <div>
+      <div class="section-label">Our Specialties</div>
+      <h2 class="section-title">Signature <em>Collections</em></h2>
+    </div>
+    <a href="#featured" class="btn-primary"><span>View Full Menu</span></a>
+  </div>
+  <div class="specialty-grid reveal">
+    <div class="specialty-card">
+      <img src="https://images.unsplash.com/photo-1535141192574-5d4897c12636?w=800&q=85" alt="Wedding Cake">
+      <div class="specialty-overlay"></div>
+      <div class="specialty-info">
+        <div class="specialty-tag">Premium Collection</div>
+        <div class="specialty-name">Wedding<br>Masterpieces</div>
+        <div class="specialty-desc">Multi-tiered grandeur with hand-piped florals, gold leaf accents, and flavours tailored to your love story. Every detail is a vow.</div>
+        <div class="specialty-price">From LKR 15,000</div>
+      </div>
+    </div>
+    <div class="specialty-card">
+      <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600&q=85" alt="Birthday Cake">
+      <div class="specialty-overlay"></div>
+      <div class="specialty-info">
+        <div class="specialty-tag">Celebration</div>
+        <div class="specialty-name">Birthday Cakes</div>
+        <div class="specialty-desc">Joyful, vibrant, and completely personalised. From children's characters to elegant adult themes.</div>
+        <div class="specialty-price">From LKR 4,500</div>
+      </div>
+    </div>
+    <div class="specialty-card">
+      <img src="https://images.unsplash.com/photo-1571115177098-24ec42ed204d?w=600&q=85" alt="Drip Cake">
+      <div class="specialty-overlay"></div>
+      <div class="specialty-info">
+        <div class="specialty-tag">Trending</div>
+        <div class="specialty-name">Drip & Bomb Cakes</div>
+        <div class="specialty-desc">Mesmerisingly glossy drips with a dramatic reveal. Instagram-worthy every time.</div>
+        <div class="specialty-price">From LKR 6,500</div>
+      </div>
+    </div>
+    <div class="specialty-card">
+      <img src="https://images.unsplash.com/photo-1562777717-dc6984f65a63?w=600&q=85" alt="Floral Cake">
+      <div class="specialty-overlay"></div>
+      <div class="specialty-info">
+        <div class="specialty-tag">Signature</div>
+        <div class="specialty-name">Floral Elegance</div>
+        <div class="specialty-desc">Sugar flowers so lifelike you'll want to stop and smell them. Pure garden romance.</div>
+        <div class="specialty-price">From LKR 8,000</div>
+      </div>
+    </div>
+    <div class="specialty-card">
+      <img src="https://images.unsplash.com/photo-1587668178277-295251f900ce?w=600&q=85" alt="Cupcakes">
+      <div class="specialty-overlay"></div>
+      <div class="specialty-info">
+        <div class="specialty-tag">Sweet Bites</div>
+        <div class="specialty-name">Cupcake Towers</div>
+        <div class="specialty-desc">Individually swirled, endlessly customisable. Perfect for parties and corporate events.</div>
+        <div class="specialty-price">From LKR 2,800</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED MENU -->
+<section id="featured">
+  <div class="featured-header reveal">
+    <div>
+      <div class="section-label" style="color:var(--gold)">Our Menu</div>
+      <h2 class="section-title">Freshly <em style="color:var(--gold-light)">Baked</em> Today</h2>
+    </div>
+    <a href="#contact" class="btn-primary"><span>Order Now</span></a>
+  </div>
+  <div class="cake-carousel" id="cakeCarousel">
+    <div class="cake-card">
+      <img class="cake-card-img" src="https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=500&q=85" alt="Chocolate Truffle">
+      <div class="cake-card-body">
+        <div class="cake-card-cat">Signature</div>
+        <div class="cake-card-name">Dark Chocolate Truffle</div>
+        <div class="cake-card-desc">Rich Valrhona ganache layered with dark sponge, espresso mousse, and gold-dusted shards.</div>
+        <div class="cake-card-footer">
+          <div class="cake-card-price">LKR 7,500</div>
+          <button class="cake-card-btn">Order</button>
+        </div>
+      </div>
+    </div>
+    <div class="cake-card">
+      <img class="cake-card-img" src="https://images.unsplash.com/photo-1488477304112-4944851de03d?w=500&q=85" alt="Strawberry Dream">
+      <div class="cake-card-body">
+        <div class="cake-card-cat">Seasonal</div>
+        <div class="cake-card-name">Strawberry Chantilly</div>
+        <div class="cake-card-desc">Vanilla chiffon with fresh-picked strawberries, chantilly cream, and rose water glaze.</div>
+        <div class="cake-card-footer">
+          <div class="cake-card-price">LKR 6,200</div>
+          <button class="cake-card-btn">Order</button>
+        </div>
+      </div>
+    </div>
+    <div class="cake-card">
+      <img class="cake-card-img" src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=500&q=85" alt="Lemon Cake">
+      <div class="cake-card-body">
+        <div class="cake-card-cat">Classic</div>
+        <div class="cake-card-name">Lemon & Elderflower</div>
+        <div class="cake-card-desc">Zesty lemon sponge, elderflower buttercream, and candied citrus peel. Sunshine in a slice.</div>
+        <div class="cake-card-footer">
+          <div class="cake-card-price">LKR 5,800</div>
+          <button class="cake-card-btn">Order</button>
+        </div>
+      </div>
+    </div>
+    <div class="cake-card">
+      <img class="cake-card-img" src="https://images.unsplash.com/photo-1551404973-761c83cd8339?w=500&q=85" alt="Red Velvet">
+      <div class="cake-card-body">
+        <div class="cake-card-cat">Beloved</div>
+        <div class="cake-card-name">Red Velvet Romance</div>
+        <div class="cake-card-desc">Classic red velvet with silky cream cheese frosting, adorned with hand-sculpted rose petals.</div>
+        <div class="cake-card-footer">
+          <div class="cake-card-price">LKR 6,900</div>
+          <button class="cake-card-btn">Order</button>
+        </div>
+      </div>
+    </div>
+    <div class="cake-card">
+      <img class="cake-card-img" src="https://images.unsplash.com/photo-1516054575922-f0b8eeadec1a?w=500&q=85" alt="Caramel">
+      <div class="cake-card-body">
+        <div class="cake-card-cat">Indulgent</div>
+        <div class="cake-card-name">Salted Caramel Crunch</div>
+        <div class="cake-card-desc">Butter sponge, salted caramel Swiss meringue, hazelnut praline crunch, and toffee shards.</div>
+        <div class="cake-card-footer">
+          <div class="cake-card-price">LKR 7,200</div>
+          <button class="cake-card-btn">Order</button>
+        </div>
+      </div>
+    </div>
+    <div class="cake-card">
+      <img class="cake-card-img" src="https://images.unsplash.com/photo-1627834377411-8da5f4f09de8?w=500&q=85" alt="Mango Cake">
+      <div class="cake-card-body">
+        <div class="cake-card-cat">Tropical</div>
+        <div class="cake-card-name">Mango Coconut Bliss</div>
+        <div class="cake-card-desc">Coconut génoise soaked in mango coulis, coconut cream, and fresh Alphonso mango roses.</div>
+        <div class="cake-card-footer">
+          <div class="cake-card-price">LKR 6,500</div>
+          <button class="cake-card-btn">Order</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="process-header reveal">
+    <div class="section-label">How It Works</div>
+    <h2 class="section-title">From Dream to <em>Delicious</em></h2>
+  </div>
+  <div class="process-grid">
+    <div class="process-step reveal reveal-delay-1">
+      <div class="process-icon">💬<div class="process-num">01</div></div>
+      <h3 class="process-title">Consultation</h3>
+      <p class="process-body">Share your vision — theme, flavours, colours, and guest count. We listen carefully to every detail.</p>
+    </div>
+    <div class="process-step reveal reveal-delay-2">
+      <div class="process-icon">✏️<div class="process-num">02</div></div>
+      <h3 class="process-title">Design</h3>
+      <p class="process-body">Our team sketches a bespoke design proposal. We refine until it's exactly what you envisioned.</p>
+    </div>
+    <div class="process-step reveal reveal-delay-3">
+      <div class="process-icon">🎂<div class="process-num">03</div></div>
+      <h3 class="process-title">Crafting</h3>
+      <p class="process-body">Baked fresh with premium ingredients, decorated by hand with obsessive attention to detail.</p>
+    </div>
+    <div class="process-step reveal reveal-delay-4">
+      <div class="process-icon">🎀<div class="process-num">04</div></div>
+      <h3 class="process-title">Delivery</h3>
+      <p class="process-body">Carefully packaged and delivered to your door — on time, every time. Ready to make memories.</p>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="gallery-header reveal">
+    <div>
+      <div class="section-label">Portfolio</div>
+      <h2 class="section-title">A Taste of Our <em>Art</em></h2>
+    </div>
+    <a href="#contact" class="btn-primary" style="background:var(--chocolate);color:var(--cream);"><span>Order Custom</span></a>
+  </div>
+  <div class="mosaic reveal">
+    <div class="mosaic-item" data-label="Wedding Dreams">
+      <img src="https://images.unsplash.com/photo-1535254973040-607b474cb50d?w=800&q=80" alt="Wedding">
+    </div>
+    <div class="mosaic-item" data-label="Floral Tiered">
+      <img src="https://images.unsplash.com/photo-1562777717-dc6984f65a63?w=600&q=80" alt="Floral">
+    </div>
+    <div class="mosaic-item" data-label="Birthday Magic">
+      <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600&q=80" alt="Birthday">
+    </div>
+    <div class="mosaic-item" data-label="Gold Drip">
+      <img src="https://images.unsplash.com/photo-1571115177098-24ec42ed204d?w=400&q=80" alt="Drip">
+    </div>
+    <div class="mosaic-item" data-label="Cupcakes">
+      <img src="https://images.unsplash.com/photo-1587668178277-295251f900ce?w=400&q=80" alt="Cupcakes">
+    </div>
+    <div class="mosaic-item" data-label="Fondant Art">
+      <img src="https://images.unsplash.com/photo-1488477304112-4944851de03d?w=600&q=80" alt="Fondant">
+    </div>
+    <div class="mosaic-item" data-label="Chocolate">
+      <img src="https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=600&q=80" alt="Chocolate">
+    </div>
+    <div class="mosaic-item" data-label="Pastel Dreams">
+      <img src="https://images.unsplash.com/photo-1551404973-761c83cd8339?w=600&q=80" alt="Pastel">
+    </div>
+    <div class="mosaic-item" data-label="Tropical Bliss">
+      <img src="https://images.unsplash.com/photo-1627834377411-8da5f4f09de8?w=600&q=80" alt="Tropical">
+    </div>
+  </div>
+</section>
+
+<!-- FLAVORS -->
+<section id="flavors">
+  <div class="flavors-header reveal">
+    <div class="section-label">Flavour Menu</div>
+    <h2 class="section-title">Choose Your <em>Flavour</em></h2>
+    <p style="font-size:0.8rem;color:var(--text-mid);margin-top:1rem;letter-spacing:0.05em;">All cakes available in a range of bases and fillings. Mix and match to your heart's delight.</p>
+  </div>
+  <div class="flavors-grid reveal">
+    <div class="flavor-pill"><span class="flavor-emoji">🍫</span><div class="flavor-name">Dark Chocolate</div><div class="flavor-note">Valrhona 72%</div></div>
+    <div class="flavor-pill"><span class="flavor-emoji">🍓</span><div class="flavor-name">Strawberry</div><div class="flavor-note">Fresh berries</div></div>
+    <div class="flavor-pill"><span class="flavor-emoji">🍋</span><div class="flavor-name">Lemon Zest</div><div class="flavor-note">Sicilian lemon</div></div>
+    <div class="flavor-pill"><span class="flavor-emoji">🥭</span><div class="flavor-name">Mango</div><div class="flavor-note">Alphonso</div></div>
+    <div class="flavor-pill"><span class="flavor-emoji">🍰</span><div class="flavor-name">Vanilla Bean</div><div class="flavor-note">Madagascar pod</div></div>
+    <div class="flavor-pill"><span class="flavor-emoji">🌹</span><div class="flavor-name">Rose & Pistachio</div><div class="flavor-note">Turkish rose</div></div>
+    <div class="flavor-pill"><span class="flavor-emoji">🍯</span><div class="flavor-name">Salted Caramel</div><div class="flavor-note">Sea salt flakes</div></div>
+    <div class="flavor-pill"><span class="flavor-emoji">🥥</span><div class="flavor-name">Coconut</div><div class="flavor-note">Ceylon coconut</div></div>
+    <div class="flavor-pill"><span class="flavor-emoji">☕</span><div class="flavor-name">Espresso</div><div class="flavor-note">Single origin</div></div>
+    <div class="flavor-pill"><span class="flavor-emoji">🍑</span><div class="flavor-name">Peach Melba</div><div class="flavor-note">White peach</div></div>
+    <div class="flavor-pill"><span class="flavor-emoji">🫐</span><div class="flavor-name">Blueberry</div><div class="flavor-note">Wild berries</div></div>
+    <div class="flavor-pill"><span class="flavor-emoji">🍊</span><div class="flavor-name">Orange Blossom</div><div class="flavor-note">Floral honey</div></div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="testimonials-header reveal">
+    <div class="section-label" style="justify-content:center;">Testimonials</div>
+    <h2 class="section-title">Words from Our <em style="color:var(--gold-light)">Guests</em></h2>
+  </div>
+  <div style="overflow:hidden; margin-top:3rem;">
+    <div class="testimonials-track" id="testimonialTrack">
+      <div class="testimonial-card">
+        <div class="testimonial-quote">"</div>
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">Our wedding cake was absolutely breathtaking. Every guest stopped to admire it before cutting. The flavours were even better than the design — truly exceptional artistry.</p>
+        <div class="testimonial-author">
+          <img class="testimonial-avatar" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80" alt="">
+          <div><div class="testimonial-name">Amaya Perera</div><div class="testimonial-role">Bride · Colombo</div></div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-quote">"</div>
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">Ordered a birthday cake for my daughter — it was a fairy castle with edible flowers. She cried happy tears. I can't recommend Chathu Cake highly enough.</p>
+        <div class="testimonial-author">
+          <img class="testimonial-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80" alt="">
+          <div><div class="testimonial-name">Roshan Fernando</div><div class="testimonial-role">Parent · Galle</div></div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-quote">"</div>
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">The salted caramel drip cake for our anniversary was perfection. Delivered on time, looked stunning, tasted divine. Already planning our next order.</p>
+        <div class="testimonial-author">
+          <img class="testimonial-avatar" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80" alt="">
+          <div><div class="testimonial-name">Dilini Jayasuriya</div><div class="testimonial-role">Customer · Kandy</div></div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-quote">"</div>
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">I used Chathu Cake for a corporate event with 200 guests. 200 cupcakes, all identical, all perfect, all delivered with military precision. Incredible.</p>
+        <div class="testimonial-author">
+          <img class="testimonial-avatar" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&q=80" alt="">
+          <div><div class="testimonial-name">Kasun Wijeratne</div><div class="testimonial-role">Events Manager · Colombo</div></div>
+        </div>
+      </div>
+      <!-- Duplicate for infinite scroll -->
+      <div class="testimonial-card">
+        <div class="testimonial-quote">"</div>
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">Our wedding cake was absolutely breathtaking. Every guest stopped to admire it before cutting. The flavours were even better than the design.</p>
+        <div class="testimonial-author">
+          <img class="testimonial-avatar" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80" alt="">
+          <div><div class="testimonial-name">Amaya Perera</div><div class="testimonial-role">Bride · Colombo</div></div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-quote">"</div>
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">Ordered a birthday cake for my daughter — it was a fairy castle with edible flowers. She cried happy tears. Truly magical.</p>
+        <div class="testimonial-author">
+          <img class="testimonial-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80" alt="">
+          <div><div class="testimonial-name">Roshan Fernando</div><div class="testimonial-role">Parent · Galle</div></div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-quote">"</div>
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">The salted caramel drip cake for our anniversary was perfection. Delivered on time, looked stunning, tasted divine.</p>
+        <div class="testimonial-author">
+          <img class="testimonial-avatar" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80" alt="">
+          <div><div class="testimonial-name">Dilini Jayasuriya</div><div class="testimonial-role">Customer · Kandy</div></div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-quote">"</div>
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">200 cupcakes, all identical, all perfect, all delivered with military precision. Incredible service.</p>
+        <div class="testimonial-author">
+          <img class="testimonial-avatar" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&q=80" alt="">
+          <div><div class="testimonial-name">Kasun Wijeratne</div><div class="testimonial-role">Events Manager · Colombo</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="cta-inner reveal">
+    <div class="section-label" style="justify-content:center;color:var(--gold);">Make It Special</div>
+    <h2 class="cta-title">Your Perfect<br>Cake Awaits</h2>
+    <div class="cta-divider"></div>
+    <p class="cta-sub">Every occasion deserves a masterpiece. Let us create something extraordinary for your most precious moments.</p>
+    <div class="cta-buttons">
+      <a href="#contact" class="btn-primary"><span>Order Your Cake</span></a>
+      <a href="tel:+94787174413" class="btn-ghost" style="border-color:var(--rose);color:var(--rose);">📞 Call Us</a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-info reveal">
+    <div class="section-label">Get in Touch</div>
+    <h2 class="section-title" style="color:var(--cream);">Let's Create<br>Together</h2>
+    <p class="contact-body">
+      Have a vision? A special date coming up? We'd love to hear all about it.
+      Reach out and let's start planning your dream cake.
+    </p>
+    <div class="contact-details">
+      <div class="contact-row">
+        <div class="contact-icon">📍</div>
+        <div>
+          <div class="contact-row-label">Visit Us</div>
+          <div class="contact-row-val">Pallewela,Pinnawala,Balangoda<br>Sabaragamuwa Province, Sri Lanka</div>
+        </div>
+      </div>
+      <div class="contact-row">
+        <div class="contact-icon">📞</div>
+        <div>
+          <div class="contact-row-label">Call or WhatsApp</div>
+          <div class="contact-row-val">+94 764054232<br>+94 787174413</div>
+        </div>
+      </div>
+      <div class="contact-row">
+        <div class="contact-icon">✉️</div>
+        <div>
+          <div class="contact-row-label">Email</div>
+          <div class="contact-row-val">chathunimesha023@gmail.com</div>
+        </div>
+      </div>
+      <div class="contact-row">
+        <div class="contact-icon">🕐</div>
+        <div>
+          <div class="contact-row-label">Open Hours</div>
+          <div class="contact-row-val">Mon–Sat: 9am – 7pm<br>Sunday: 10am – 4pm</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="contact-form reveal reveal-delay-2">
+    <div style="margin-bottom:2rem;">
+      <div class="section-label">Order Form</div>
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;color:var(--cream);">Place Your Order</h3>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">First Name</label>
+        <input type="text" class="form-input" placeholder="Your name">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Last Name</label>
+        <input type="text" class="form-input" placeholder="Your surname">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Email</label>
+      <input type="email" class="form-input" placeholder="your@email.com">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Phone / WhatsApp</label>
+      <input type="tel" class="form-input" placeholder="+94 77 000 0000">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Cake Type</label>
+        <select class="form-select form-input">
+          <option value="">Select type…</option>
+          <option>Wedding Cake</option>
+          <option>Birthday Cake</option>
+          <option>Anniversary Cake</option>
+          <option>Drip Cake</option>
+          <option>Floral Cake</option>
+          <option>Cupcake Tower</option>
+          <option>Custom Creation</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Event Date</label>
+        <input type="date" class="form-input">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Flavour Preference</label>
+      <input type="text" class="form-input" placeholder="e.g. Dark chocolate with salted caramel">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Tell Us Your Vision</label>
+      <textarea class="form-textarea" placeholder="Describe your dream cake — colours, theme, special messages, dietary requirements…"></textarea>
+    </div>
+    <button class="form-submit" id="formSubmit">Send My Order Request ✦</button>
+    <div id="formSuccess" style="display:none;text-align:center;padding:1rem;color:var(--gold-light);font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.1rem;margin-top:1rem;">
+      Thank you! We'll be in touch within 24 hours. 🎂
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <span class="footer-logo">Chathu Cake</span>
+      <p class="footer-tagline">"Crafting edible art for life's sweetest celebrations — one cake at a time, with love."</p>
+      <div class="footer-social">
+        <a class="social-btn" href="#" title="Facebook">f</a>
+        <a class="social-btn" href="#" title="Instagram">in</a>
+        <a class="social-btn" href="#" title="WhatsApp">w</a>
+      
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Explore</div>
+      <ul class="footer-links">
+        <li><a href="#about">Our Story</a></li>
+        <li><a href="#specialties">Specialties</a></li>
+        <li><a href="#featured">Cake Menu</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#flavors">Flavours</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Services</div>
+      <ul class="footer-links">
+        <li><a href="#">Wedding Cakes</a></li>
+        <li><a href="#">Birthday Cakes</a></li>
+        <li><a href="#">Corporate Events</a></li>
+        <li><a href="#">Custom Orders</a></li>
+        <li><a href="#">Delivery</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Information</div>
+      <ul class="footer-links">
+        <li><a href="#">Ordering Guide</a></li>
+        <li><a href="#">Pricing</a></li>
+        <li><a href="#">Delivery Areas</a></li>
+        <li><a href="#">Allergen Info</a></li>
+        <li><a href="#contact">Contact Us</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2025 Chathu Cake · All Rights Reserved · Kalutara, Sri Lanka</div>
+    <div class="footer-love">Made with 🎂 & ❤️</div>
+  </div>
+</footer>
+
+<!-- FLOATING ORDER BUTTON -->
+<a href="#contact" class="ribbon">
+  <span class="ribbon-icon">🎂</span>
+  <span class="ribbon-text">Order</span>
+</a>
+
+<script>
+// ── LOADER ──
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('loader').classList.add('hide');
+  }, 2200);
+});
+
+// ── CURSOR ──
+const cursor = document.getElementById('cursor');
+const follower = document.getElementById('cursorFollower');
+let mouseX = 0, mouseY = 0, followerX = 0, followerY = 0;
+
+document.addEventListener('mousemove', e => {
+  mouseX = e.clientX; mouseY = e.clientY;
+  cursor.style.left = mouseX + 'px';
+  cursor.style.top = mouseY + 'px';
+});
+
+(function animFollower() {
+  followerX += (mouseX - followerX) * 0.12;
+  followerY += (mouseY - followerY) * 0.12;
+  follower.style.left = followerX + 'px';
+  follower.style.top = followerY + 'px';
+  requestAnimationFrame(animFollower);
+})();
+
+document.querySelectorAll('a, button, .specialty-card, .cake-card, .mosaic-item, .flavor-pill').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    cursor.style.width = '20px';
+    cursor.style.height = '20px';
+    follower.style.width = '60px';
+    follower.style.height = '60px';
+    follower.style.opacity = '0.8';
+  });
+  el.addEventListener('mouseleave', () => {
+    cursor.style.width = '12px';
+    cursor.style.height = '12px';
+    follower.style.width = '40px';
+    follower.style.height = '40px';
+    follower.style.opacity = '0.5';
+  });
+});
+
+// ── NAV SCROLL ──
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 80);
+});
+
+// ── PARTICLES ──
+const particlesContainer = document.getElementById('particles');
+const particleColors = ['#f4c8b0', '#c8974a', '#e8c485', '#d4a090', '#c97b5e'];
+function createParticle() {
+  const p = document.createElement('div');
+  p.classList.add('particle');
+  const size = Math.random() * 8 + 3;
+  p.style.cssText = `
+    width: ${size}px;
+    height: ${size}px;
+    left: ${Math.random() * 100}vw;
+    background: ${particleColors[Math.floor(Math.random() * particleColors.length)]};
+    animation-duration: ${Math.random() * 15 + 10}s;
+    animation-delay: ${Math.random() * 5}s;
+  `;
+  particlesContainer.appendChild(p);
+  setTimeout(() => p.remove(), 25000);
+}
+setInterval(createParticle, 600);
+for (let i = 0; i < 10; i++) createParticle();
+
+// ── SCROLL REVEAL ──
+const reveals = document.querySelectorAll('.reveal');
+const revealObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+reveals.forEach(r => revealObserver.observe(r));
+
+// ── FORM SUBMIT ──
+document.getElementById('formSubmit').addEventListener('click', function() {
+  const inputs = document.querySelectorAll('.form-input, .form-textarea, .form-select');
+  let filled = false;
+  inputs.forEach(i => { if (i.value) filled = true; });
+  if (filled) {
+    this.style.background = 'var(--sage)';
+    this.textContent = 'Request Sent! ✓';
+    document.getElementById('formSuccess').style.display = 'block';
+    setTimeout(() => {
+      this.style.background = 'var(--gold)';
+      this.textContent = 'Send My Order Request ✦';
+      document.getElementById('formSuccess').style.display = 'none';
+    }, 4000);
+  }
+});
+
+// ── CAKE CARD ORDER BUTTONS ──
+document.querySelectorAll('.cake-card-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+  });
+});
+
+// ── PARALLAX HERO TEXT ──
+window.addEventListener('scroll', () => {
+  const scrolled = window.scrollY;
+  const heroContent = document.querySelector('.hero-content');
+  if (heroContent && scrolled < window.innerHeight) {
+    heroContent.style.transform = `translateY(${scrolled * 0.3}px)`;
+    heroContent.style.opacity = 1 - scrolled / window.innerHeight;
+  }
+});
+
+// ── PROCESS STEP HOVER ──
+document.querySelectorAll('.process-step').forEach((step, i) => {
+  step.addEventListener('mouseenter', () => {
+    step.querySelector('.process-icon').style.background = 'var(--chocolate)';
+  });
+  step.addEventListener('mouseleave', () => {
+    step.querySelector('.process-icon').style.background = 'var(--ivory)';
+  });
+});
+
+// ── SMOOTH SCROLL ──
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', function(e) {
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+});
+
+// ── FLAVOR PILL INTERACTION ──
+document.querySelectorAll('.flavor-pill').forEach(pill => {
+  pill.addEventListener('click', function() {
+    this.style.borderColor = 'var(--rose)';
+    this.style.background = 'var(--cream)';
+    const name = this.querySelector('.flavor-name').textContent;
+    const contactInput = document.querySelector('.form-input[placeholder*="chocolate"]');
+    if (contactInput) {
+      contactInput.value = name;
+      contactInput.style.borderColor = 'var(--gold)';
+    }
+    setTimeout(() => {
+      this.style.borderColor = '';
+      this.style.background = '';
+    }, 1500);
+  });
+});
+</script>
+</body>
+</html>
